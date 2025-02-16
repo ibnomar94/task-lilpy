@@ -62,7 +62,7 @@ public class MultipleMessageParser {
         if(!start.equals(START)){
             throw new InvalidParameterException("Invalid message: start of the message not found");
         }
-        currentIndex = 2;
+        currentIndex += 2;
 
         int length = Integer.parseInt(message.substring(currentIndex, currentIndex+2), 16)*2;
         currentIndex += 2 + length;
