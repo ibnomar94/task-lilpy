@@ -30,6 +30,13 @@ public class SingleMessageParser {
         return messageEntity;
     }
 
+    public String getCurrentMessage(int currentIndex, String message) {
+        currentIndex += 2;
+        int length = getMessageLength(currentIndex,message);
+        currentIndex += 2 + length;
+        return message.substring(currentIndex -length, currentIndex);
+    }
+
     private String resolveTag(String message, int index) {
         int currentIndex = index;
 

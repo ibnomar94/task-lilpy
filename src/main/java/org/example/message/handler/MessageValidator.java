@@ -22,7 +22,7 @@ public class MessageValidator {
         }
     }
 
-    public String validateAndResolveMessage(int currentIndex, String message) {
+    public void validateAndResolveMessage(int currentIndex, String message) {
         String start = message.substring(currentIndex, currentIndex + 2);
 
         if(!start.equals(START)){
@@ -38,6 +38,6 @@ public class MessageValidator {
             throw new InvalidParameterException("Invalid message: end of the message not found");
         }
 
-        return message.substring(currentIndex-length, currentIndex);
+        //return message.substring(currentIndex-length, currentIndex);
     }
 }

@@ -20,9 +20,9 @@ public class MultipleMessageParser {
         Map<String, List<MessageEntity>> messageEntityList = new HashMap<>();
 
         while(currentIndex < messages.length()){
-            String message = messageValidator.validateAndResolveMessage(currentIndex, messages);
-
-            MessageEntity entity = singleMessageParser.parse(message);
+            messageValidator.validateAndResolveMessage(currentIndex, messages);
+            String message = singleMessageParser.getCurrentMessage(currentIndex,messages);
+                    MessageEntity entity = singleMessageParser.parse(message);
             if(!messageEntityList.containsKey(entity.getKernel())){
                 messageEntityList.put(entity.getKernel(), new ArrayList<>());
             }
