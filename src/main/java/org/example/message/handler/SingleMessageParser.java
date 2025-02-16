@@ -3,6 +3,7 @@ package org.example.message.handler;
 import org.example.entity.MessageEntity;
 
 import static org.example.message.handler.MessageParserHelper.addTag;
+import static org.example.message.handler.MessageParserHelper.getMessageLength;
 
 public class SingleMessageParser {
 

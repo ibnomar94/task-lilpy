@@ -65,4 +65,8 @@ public class MessageParserHelper {
                 // do nothing
         }
     }
+
+    public static int getMessageLength(int currentIndex, String message){
+        return Integer.parseInt(message.substring(currentIndex, currentIndex+2), 16)*2;
+    }
 }
