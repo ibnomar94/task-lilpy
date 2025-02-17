@@ -2,10 +2,11 @@ package org.example.message.handler;
 
 import org.example.entity.MessageEntity;
 
-import static org.example.message.handler.MessageParserHelper.addTag;
+import static org.example.message.handler.MessageParserHelper.getAvailableResolvers;
 import static org.example.message.handler.MessageParserHelper.getMessageLength;
 
 public class SingleMessageParser {
+
 
     public MessageEntity parse(String message) {
 
@@ -24,7 +25,9 @@ public class SingleMessageParser {
 
             currentIndex += value.length();
 
-            addTag(tag, value, messageEntity);
+            getAvailableResolvers().stream().filter(tagResolver -> tagResolver.isValid(tag))
+                    .findFirst()
+                    .ifPresent(tagResolver -> tagResolver.resolve(value, messageEntity));
         }
 
         return messageEntity;
@@ -32,9 +35,9 @@ public class SingleMessageParser {
 
     public String getCurrentMessage(int currentIndex, String message) {
         currentIndex += 2;
-        int length = getMessageLength(currentIndex,message);
+        int length = getMessageLength(currentIndex, message);
         currentIndex += 2 + length;
-        return message.substring(currentIndex -length, currentIndex);
+        return message.substring(currentIndex - length, currentIndex);
     }
 
     private String resolveTag(String message, int index) {
