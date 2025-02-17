@@ -1,9 +1,11 @@
 package org.example.message.handler;
 
 import org.example.entity.MessageEntity;
+import org.example.message.property.Kernel;
 
 import java.util.Currency;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -19,20 +21,14 @@ public class MessageParserHelper {
 
     public static String resolveKernel(String value) {
         String kernelValue = value.substring(0, 2);
-
-        return switch (kernelValue) {
-            case "02" -> "Mastercard";
-            case "03" -> "Visa";
-            case "04" -> "Amex";
-            default -> "unknown";
-        };
+        Optional<Kernel> kernel = Kernel.getByValue(kernelValue);
+        return kernel.isPresent()? kernel.get().getKernelName() : UNKNOWN_KERNEL;
     }
 
     public static String resolveCardNumber(String value, String kernel) {
-        return switch (kernel) {
-            case "Amex" -> value.substring(0, 15);
-            default -> value.substring(0, Integer.min(value.length(), 16));
-        };
+        return kernel.equals(Kernel.AMEX.getKernelName())?
+                value.substring(0, 15) :
+                value.substring(0, Integer.min(value.length(), 16));
     }
 
     public static String resolveCurrency(String currency) {

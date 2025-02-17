@@ -22,7 +22,8 @@ public class MultipleMessageParser {
         while(currentIndex < messages.length()){
             messageValidator.validateAndResolveMessage(currentIndex, messages);
             String message = singleMessageParser.getCurrentMessage(currentIndex,messages);
-                    MessageEntity entity = singleMessageParser.parse(message);
+            MessageEntity entity = singleMessageParser.parse(message);
+
             if(!messageEntityList.containsKey(entity.getKernel())){
                 messageEntityList.put(entity.getKernel(), new ArrayList<>());
             }
