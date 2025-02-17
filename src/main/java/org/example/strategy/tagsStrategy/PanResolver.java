@@ -3,7 +3,7 @@ package org.example.strategy.tagsStrategy;
 import org.example.entity.MessageEntity;
 import org.example.message.property.Kernel;
 
-import static org.example.message.property.Constants.PAN;
+import static org.example.message.property.Constants.*;
 
 public class PanResolver implements TagsResolver {
     @Override
@@ -18,7 +18,7 @@ public class PanResolver implements TagsResolver {
 
     private String resolveCardNumber(String value, String kernel) {
         return kernel.equals(Kernel.AMEX.getKernelName()) ?
-                value.substring(0, 15) :
-                value.substring(0, Integer.min(value.length(), 16));
+                value.substring(0, AMEX_LENGTH) :
+                value.substring(0, Integer.min(value.length(), DEFAULT_LENGTH));
     }
 }

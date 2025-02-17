@@ -7,33 +7,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.example.message.property.Constants.*;
+
 public class MultipleMessageParser {
 
     private final SingleMessageParser singleMessageParser = new SingleMessageParser();
     private final MessageValidator messageValidator = new MessageValidator();
 
-    public Map<String, List<MessageEntity>> parse(String messages){
+    public Map<String, List<MessageEntity>> parse(String messages) {
 
         messageValidator.validateTotalLength(messages);
 
         int currentIndex = 4;
         Map<String, List<MessageEntity>> messageEntityList = new HashMap<>();
 
-        while(currentIndex < messages.length()){
+        while (currentIndex < messages.length()) {
             messageValidator.validateAndResolveMessage(currentIndex, messages);
-            String message = singleMessageParser.getCurrentMessage(currentIndex,messages);
+            String message = singleMessageParser.getCurrentMessage(currentIndex, messages);
             MessageEntity entity = singleMessageParser.parse(message);
 
-            if(!messageEntityList.containsKey(entity.getKernel())){
+            if (!messageEntityList.containsKey(entity.getKernel())) {
                 messageEntityList.put(entity.getKernel(), new ArrayList<>());
             }
 
             messageEntityList.get(entity.getKernel()).add(entity);
 
-            currentIndex += message.length() + 6;
+            currentIndex += message.length() + START_TAG_LENGTH + END_TAG_LENGTH + MESSAGE_LENGTH;
         }
 
-        for(String kernel : messageEntityList.keySet()){
+        for (String kernel : messageEntityList.keySet()) {
             System.out.println(messageEntityList.get(kernel));
         }
 

@@ -13,4 +13,12 @@ public class Constants {
     // Kernel
     public static final  String UNKNOWN_KERNEL = "unknown";
 
+    // Tag Length
+    public static int START_TAG_LENGTH = 2;
+    public static int END_TAG_LENGTH = 2;
+    public static int MESSAGE_LENGTH = 2;
+
+    // PAN Length
+    public static int AMEX_LENGTH = 15;
+    public static int DEFAULT_LENGTH = 16;
 }
