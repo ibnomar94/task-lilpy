@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.example.message.handler.MessageParserHelper.getMessageLength;
 import static org.example.message.property.Constants.*;
 
 public class MultipleMessageParser {
@@ -23,7 +24,7 @@ public class MultipleMessageParser {
 
         while (currentIndex < messages.length()) {
             messageValidator.validateAndResolveMessage(currentIndex, messages);
-            String message = singleMessageParser.getCurrentMessage(currentIndex, messages);
+            String message = getCurrentMessage(currentIndex, messages);
             MessageEntity entity = singleMessageParser.parse(message);
 
             if (!messageEntityList.containsKey(entity.getKernel())) {
@@ -40,5 +41,12 @@ public class MultipleMessageParser {
         }
 
         return messageEntityList;
+    }
+
+    public String getCurrentMessage(int currentIndex, String message) {
+        currentIndex += 2;
+        int length = getMessageLength(currentIndex, message);
+        currentIndex += 2 + length;
+        return message.substring(currentIndex - length, currentIndex);
     }
 }
