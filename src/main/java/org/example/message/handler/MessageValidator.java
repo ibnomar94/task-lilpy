@@ -3,10 +3,10 @@ package org.example.message.handler;
 import java.security.InvalidParameterException;
 
 import static org.example.message.handler.MessageParserHelper.getMessageLength;
+import static org.example.message.property.Constants.END;
+import static org.example.message.property.Constants.START;
 
 public class MessageValidator {
-    private static final String START = "02";
-    private static final String END = "03";
 
     public void validateTotalLength(String message) {
         int totalLength = message.length(); //e.g. 0042
@@ -37,7 +37,5 @@ public class MessageValidator {
         if(!end.equals(END)){
             throw new InvalidParameterException("Invalid message: end of the message not found");
         }
-
-        //return message.substring(currentIndex-length, currentIndex);
     }
 }

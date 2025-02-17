@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static org.example.message.property.Constants.*;
+
 public class MessageParserHelper {
 
     private static Map<Integer, Currency> currencies = null;
@@ -15,7 +17,7 @@ public class MessageParserHelper {
         currencies = Currency.getAvailableCurrencies().stream().collect(Collectors.toMap(Currency::getNumericCode, Function.identity(), (key1, key2) -> key1));
     }
 
-    public static String resolveKernel(String value){
+    public static String resolveKernel(String value) {
         String kernelValue = value.substring(0, 2);
 
         return switch (kernelValue) {
@@ -26,39 +28,39 @@ public class MessageParserHelper {
         };
     }
 
-    public static String resolveCardNumber(String value, String kernel){
+    public static String resolveCardNumber(String value, String kernel) {
         return switch (kernel) {
             case "Amex" -> value.substring(0, 15);
             default -> value.substring(0, Integer.min(value.length(), 16));
         };
     }
 
-    public static String resolveCurrency(String currency){
+    public static String resolveCurrency(String currency) {
         int cur = Integer.parseInt(currency);
 
-        if(currencies.containsKey(cur))  {
+        if (currencies.containsKey(cur)) {
             return currencies.get(cur).getCurrencyCode();
         }
 
-       return null;
+        return null;
     }
 
-    public static Float resolveAmount(String amount){
-        return Float.parseFloat(amount)/100;
+    public static Float resolveAmount(String amount) {
+        return Float.parseFloat(amount) / 100;
     }
 
     public static void addTag(String tag, String value, MessageEntity messageEntity) {
         switch (tag.toUpperCase()){
-            case "9F2A":
+            case KERNEL:
                 messageEntity.setKernel(resolveKernel(value));
                 break;
-            case  "5A":
+            case PAN:
                 messageEntity.setCardNumber(resolveCardNumber(value, messageEntity.getKernel()));
                 break;
-            case "9F02":
+            case AMOUNT:
                 messageEntity.setAmount(resolveAmount(value));
                 break;
-            case "5F2A":
+            case CURRENCY:
                 messageEntity.setCurrency(resolveCurrency(value));
                 break;
             default:
@@ -66,7 +68,7 @@ public class MessageParserHelper {
         }
     }
 
-    public static int getMessageLength(int currentIndex, String message){
-        return Integer.parseInt(message.substring(currentIndex, currentIndex+2), 16)*2;
+    public static int getMessageLength(int currentIndex, String message) {
+        return Integer.parseInt(message.substring(currentIndex, currentIndex + 2), 16) * 2;
     }
 }
